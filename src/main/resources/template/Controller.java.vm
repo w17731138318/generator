@@ -1,0 +1,105 @@
+package ${package}.controller;
+
+import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
+import java.util.Map;
+
+import org.apache.shiro.authz.annotation.RequiresPermissions;
+import org.springframework.beans.factory.annotation.Autowired;
+
+import ${package}.entity.${className}Entity;
+import ${package}.service.${className}Service;
+import ${package}.common.utils.PageUtils;
+import ${package}.common.utils.Query;
+import ${package}.common.utils.R;
+
+
+
+
+/**
+ * ${comments}
+ * 
+ * @author ${author}
+ * @version 0.1v
+ * @email ${email}
+ * @create ${datetime}
+ */
+@RestController
+@RequestMapping("${pathName}")
+public class ${className}Controller {
+	@Autowired
+	private ${className}Service ${classname}Service;
+	
+	/**
+	 * 列表
+	 */
+	@GetMapping("/list")
+	@RequiresPermissions("${pathName}:list")
+	@ApiOperation(value="分页查询", notes="分页查询${className}")
+	public R list(@RequestParam Map<String, Object> params){
+		//查询列表数据
+        Query query = new Query(params);
+
+		List<${className}Entity> ${classname}List = ${classname}Service.queryList(query);
+		int total = ${classname}Service.queryTotal(query);
+		
+		PageUtils pageUtil = new PageUtils(${classname}List, total, query.getLimit(), query.getPage());
+		
+		return R.ok().put("page", pageUtil);
+	}
+	
+	
+	/**
+	 * 信息
+	 */
+	@GetMapping("/info/{${pk.attrname}}")
+	@RequiresPermissions("${pathName}:info")
+	@ApiOperation(value="获取${className}对象", notes="根据${className}的ID查询")
+	@ApiImplicitParam(name = "id", value = "${className}对象ID", required = true, dataType = "Long")
+	public R info(@PathVariable("${pk.attrname}") ${pk.attrType} ${pk.attrname}){
+		${className}Entity ${classname} = ${classname}Service.queryObject(${pk.attrname});
+		
+		return R.ok().put("${classname}", ${classname});
+	}
+	
+	/**
+	 * 保存
+	 */
+	@PostMapping("/save")
+	@RequiresPermissions("${pathName}:save")
+	@ApiOperation(value="创建${className}", notes="根据${className}对象创建")
+	@ApiImplicitParam(name = "${className}", value = "${className}详细实体", required = true, dataType = "${className}")
+	public R save(@RequestBody ${className}Entity ${classname}){
+		${classname}Service.save(${classname});
+		
+		return R.ok();
+	}
+	
+	/**
+	 * 修改
+	 */
+	@PostMapping("/update")
+	@RequiresPermissions("${pathName}:update")
+	@ApiOperation(value="更新${className}", notes="根据${className}对象更新")
+	@ApiImplicitParam(name = "${className}", value = "${className}详细实体", required = true, dataType = "${className}")
+	public R update(@RequestBody ${className}Entity ${classname}){
+		${classname}Service.update(${classname});
+		
+		return R.ok();
+	}
+	
+	/**
+	 * 删除
+	 */
+	@DeleteMapping("/delete")
+	@RequiresPermissions("${pathName}:delete")
+	@ApiOperation(value="删除${className}", notes="根据${className}的ID删除")
+	@ApiImplicitParam(name = "ID", value = "${className}对象的ID", required = true, dataType = "Long")
+	public R delete(@RequestBody ${pk.attrType}[] ${pk.attrname}s){
+		${classname}Service.deleteBatch(${pk.attrname}s);
+		
+		return R.ok();
+	}
+	
+}
