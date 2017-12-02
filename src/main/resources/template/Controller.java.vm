@@ -1,7 +1,8 @@
 package ${package}.controller;
 
 import org.springframework.web.bind.annotation.*;
-
+import io.swagger.annotations.ApiImplicitParam;
+import io.swagger.annotations.ApiOperation;
 import java.util.List;
 import java.util.Map;
 
@@ -10,9 +11,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 import ${package}.entity.${className}Entity;
 import ${package}.service.${className}Service;
-import ${package}.common.utils.PageUtils;
-import ${package}.common.utils.Query;
-import ${package}.common.utils.R;
+import com.pasq.common.utils.PageUtils;
+import com.pasq.common.utils.Query;
+import com.pasq.common.utils.R;
 
 
 
